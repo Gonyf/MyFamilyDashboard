@@ -5,3 +5,8 @@
 }
 
 <h1>@Model.Name</h1>
+@foreach (var ingredient in Model.Ingredients)
+{
+    <h2>@ingredient.Name @ingredient.Quantity @ingredient.Unit</h2>
+}
+<h2></h2>
