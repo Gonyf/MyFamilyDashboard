@@ -33,5 +33,10 @@ namespace MyFamilyDashboard.Controllers
             };
             return View(recipe);
         }
+        [Route("Recipes/released/{year}/{month}")]
+        public ActionResult ByRelease(int year, int month)
+        {
+            return Content($"Year: {year} and month: {month}");
+        }
     }
 }
