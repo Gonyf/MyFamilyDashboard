@@ -3,12 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using MyFamilyDashboard.Data;
 using MyFamilyDashboard.Models;
 
 namespace MyFamilyDashboard.Controllers
 {
     public class RecipesController : Controller
     {
+        #region protected members
+        protected ApplicationDbContext applicationDbContext;
+
+        #endregion
+
+        public RecipesController(ApplicationDbContext context)
+        {
+            applicationDbContext = context;
+        }
         // Recipes/Random
         public IActionResult Random()
         {
@@ -26,6 +36,12 @@ namespace MyFamilyDashboard.Controllers
                     new Ingredient()
                     {
                         Name = "Chicken",
+                        Quantity = 1000,
+                        Unit = IngredientUnit.Grams
+                    },
+                    new Ingredient()
+                    {
+                        Name = applicationDbContext.Settings.FirstOrDefault().Name,
                         Quantity = 1000,
                         Unit = IngredientUnit.Grams
                     }

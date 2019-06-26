@@ -24,7 +24,7 @@ namespace MyFamilyDashboard.Data
         {
             base.OnConfiguring(optionsBuilder);
 
-            optionsBuilder.UseSqlServer("Server=PF0QCAMZ\\SQLEXPRESS;Database=MyFamilyDashboardEF;Trusted_Connection=True;MultipleActiveResultSets=True");
+            //optionsBuilder.UseSqlServer("Server=PF0QCAMZ\\SQLEXPRESS;Database=MyFamilyDashboardEF;Trusted_Connection=True;MultipleActiveResultSets=True");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
