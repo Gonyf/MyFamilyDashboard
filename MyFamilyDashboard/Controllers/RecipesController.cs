@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MyFamilyDashboard.Data;
 using MyFamilyDashboard.Models;
@@ -22,6 +20,26 @@ namespace MyFamilyDashboard.Controllers
         // Recipes/Random
         public IActionResult Random()
         {
+            var setting = applicationDbContext.Settings.FirstOrDefault();
+            string settingName = "No settings content";
+            
+            if (setting != null)
+            {
+                settingName = setting.Name;
+                setting.Name = "Horse";
+                applicationDbContext.Settings.Update(setting);
+                applicationDbContext.SaveChanges();
+            }
+            else
+            {
+                applicationDbContext.Settings.Add(new SettingsDataModel
+                {
+                    Name = "Dennis",
+                    Value = "2"
+                });
+                applicationDbContext.SaveChanges();
+            }
+            
             var recipe = new Recipe()
             {
                 Name = "Butter Chicken",
@@ -41,7 +59,7 @@ namespace MyFamilyDashboard.Controllers
                     },
                     new Ingredient()
                     {
-                        Name = applicationDbContext.Settings.FirstOrDefault().Name,
+                        Name = settingName,
                         Quantity = 1000,
                         Unit = IngredientUnit.Grams
                     }

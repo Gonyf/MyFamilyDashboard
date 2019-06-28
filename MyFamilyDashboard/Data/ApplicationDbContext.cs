@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace MyFamilyDashboard.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         #region Public Properties 
 
@@ -16,7 +17,7 @@ namespace MyFamilyDashboard.Data
         /// <param name="options">The database context options</param>
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-
+            this.Database.EnsureCreated();
         }
 
         #endregion
@@ -30,6 +31,7 @@ namespace MyFamilyDashboard.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            //modelBuilder.Entity<SettingsDataModel>();
         }
     }
 

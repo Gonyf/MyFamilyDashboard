@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -26,9 +27,9 @@ namespace MyFamilyDashboard
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            Console.WriteLine("Connection String: " + Configuration.GetConnectionString("DefaultConnection"));
             services.AddDbContext<ApplicationDbContext>(options => 
-            options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
+            );
 
 
 
@@ -40,6 +41,21 @@ namespace MyFamilyDashboard
             });
 
 
+            // adds cookies based authentication
+            // adds scoped classes for things like UserManager, SignInManager, PasswordHashers
+            // NOTE: automatically adds the validated user from a cookie to the httpContext.User
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                // adds UserStore and RoleStore from this context
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                //adds a provider that generates unique keys and hashes for things like
+                // forgot password links, phone number verification codes etc. 
+                .AddDefaultTokenProviders();
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/NotLoggedIn";
+            });
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
@@ -47,6 +63,8 @@ namespace MyFamilyDashboard
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
         {
             IoCContainer.Provider = serviceProvider as ServiceProvider;
+
+            app.UseAuthentication();
 
             if (env.IsDevelopment())
             {
