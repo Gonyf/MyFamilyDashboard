@@ -21,10 +21,48 @@ namespace MyFamilyDashboard.Controllers
         {
             return View(applicationDbContext.Recipes);
         }
+        [HttpGet]
         public IActionResult Create()
         {
-
             return View();
+        }
+        [HttpPost]
+        public IActionResult Create(RecipeDataModel Recipe)
+        {
+            applicationDbContext.Recipes.Add(Recipe);
+            applicationDbContext.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var recipe = applicationDbContext.Recipes.FirstOrDefault(r => r.Id == id);
+            return View(recipe);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(RecipeDataModel recipe)
+        {
+            applicationDbContext.Recipes.Update(recipe);
+            applicationDbContext.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult Delete(int id)
+        {
+            var recipe = applicationDbContext.Recipes.FirstOrDefault(r => r.Id == id);
+            applicationDbContext.Recipes.Remove(recipe);
+            applicationDbContext.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        [Route("Recipes/Details/{id}")]
+        public IActionResult Details(int id)
+        {
+            var recipe = applicationDbContext.Recipes.FirstOrDefault(r => r.Id == id);
+            return View(recipe);
         }
         // Recipes/Random
         public IActionResult Random()

@@ -33,8 +33,7 @@ namespace MyFamilyDashboard.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<RecipeDataModel>().HasMany(r => r.Ingredients).WithOne(i => i.Recipe);
-            //modelBuilder.Entity<SettingsDataModel>();
+            modelBuilder.Entity<RecipeDataModel>().HasMany(r => r.Ingredients).WithOne(i => i.Recipe).OnDelete(DeleteBehavior.Cascade);
         }
     }
 
