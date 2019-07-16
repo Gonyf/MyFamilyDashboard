@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -11,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using MyFamilyDashboard.Data;
 
 namespace MyFamilyDashboard
@@ -19,16 +21,16 @@ namespace MyFamilyDashboard
     {
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            IoCContainer.Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options => 
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
+                options.UseSqlServer(IoCContainer.Configuration.GetConnectionString("DefaultConnection"))
             );
 
 
@@ -50,6 +52,22 @@ namespace MyFamilyDashboard
                 //adds a provider that generates unique keys and hashes for things like
                 // forgot password links, phone number verification codes etc. 
                 .AddDefaultTokenProviders();
+
+            services.AddAuthentication().AddJwtBearer(
+                options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = IoCContainer.Configuration["Jwt:Issuer"],
+                        ValidAudience = IoCContainer.Configuration["Jwt:Audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(IoCContainer.Configuration["Jwt:SecretKey"]))
+                    };
+                });
+
 
             services.ConfigureApplicationCookie(options =>
             {

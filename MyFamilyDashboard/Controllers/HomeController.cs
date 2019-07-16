@@ -58,6 +58,8 @@ namespace MyFamilyDashboard.Controllers
                 return Content("User creation failed", "text/html");
             }
         }
+
+        // cookie authorization
         [Authorize]
         [Route("private")]
         public IActionResult Private()

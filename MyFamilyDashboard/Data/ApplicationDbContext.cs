@@ -8,6 +8,8 @@ namespace MyFamilyDashboard.Data
         #region Public Properties 
 
         public DbSet<SettingsDataModel> Settings { get; set; }
+        public DbSet<TodoListDataModel> TodoLists { get; set; }
+        public DbSet<RecipeDataModel> Recipes { get; set; }
         #endregion
 
         #region Constructor
@@ -31,6 +33,7 @@ namespace MyFamilyDashboard.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<RecipeDataModel>().HasMany(r => r.Ingredients).WithOne(i => i.Recipe);
             //modelBuilder.Entity<SettingsDataModel>();
         }
     }

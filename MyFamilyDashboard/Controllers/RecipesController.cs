@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MyFamilyDashboard.Data;
-using MyFamilyDashboard.Models;
 
 namespace MyFamilyDashboard.Controllers
 {
@@ -16,6 +16,15 @@ namespace MyFamilyDashboard.Controllers
         public RecipesController(ApplicationDbContext context)
         {
             applicationDbContext = context;
+        }
+        public IActionResult Index()
+        {
+            return View(applicationDbContext.Recipes);
+        }
+        public IActionResult Create()
+        {
+
+            return View();
         }
         // Recipes/Random
         public IActionResult Random()
@@ -40,32 +49,40 @@ namespace MyFamilyDashboard.Controllers
                 applicationDbContext.SaveChanges();
             }
             
-            var recipe = new Recipe()
+
+            var newRecipe = applicationDbContext.Recipes.FirstOrDefault();
+
+            if (newRecipe == null)
             {
-                Name = "Butter Chicken",
-                Ingredients = new List<Ingredient>()
+                newRecipe = new RecipeDataModel()
                 {
-                    new Ingredient()
+                    Name = "Butter Chicken",
+                    Ingredients = new List<IngredientDataModel>()
                     {
-                        Name = "butter",
-                        Quantity = 100,
-                        Unit = IngredientUnit.Grams
-                    },
-                    new Ingredient()
-                    {
-                        Name = "Chicken",
-                        Quantity = 1000,
-                        Unit = IngredientUnit.Grams
-                    },
-                    new Ingredient()
-                    {
-                        Name = settingName,
-                        Quantity = 1000,
-                        Unit = IngredientUnit.Grams
+                        new IngredientDataModel()
+                        {
+                            Name = "butter",
+                            Quantity = 100,
+                            Unit = IngredientUnitDataModel.Grams
+                        },
+                        new IngredientDataModel()
+                        {
+                            Name = "Chicken",
+                            Quantity = 1000,
+                            Unit = IngredientUnitDataModel.Grams
+                        },
+                        new IngredientDataModel()
+                        {
+                            Name = settingName,
+                            Quantity = 1000,
+                            Unit = IngredientUnitDataModel.TableSpoon
+                        }
                     }
-                }
-            };
-            return View(recipe);
+                };
+                applicationDbContext.Add(newRecipe);
+                applicationDbContext.SaveChanges();
+            }
+            return View(applicationDbContext.Recipes.Include(r => r.Ingredients).FirstOrDefault());
         }
         [Route("Recipes/released/{year}/{month}")]
         public ActionResult ByRelease(int year, int month)

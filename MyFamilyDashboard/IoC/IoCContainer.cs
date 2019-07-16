@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using MyFamilyDashboard.Data;
 using System;
 
@@ -11,5 +12,7 @@ namespace MyFamilyDashboard
     public static class IoCContainer
     {
         public static ServiceProvider Provider { get; set; }
+
+        public static IConfiguration Configuration { get; set; }
     }
 }
