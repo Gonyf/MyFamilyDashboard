@@ -34,5 +34,19 @@ namespace MyFamilyDashboard.Controllers
             applicationDbContext.SaveChanges();
             return RedirectToAction("Index");
         }
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var todoList = applicationDbContext.TodoLists.FirstOrDefault(t => t.Id == id);
+            return View(todoList);
+        }
+        [HttpPost]
+        public IActionResult Edit(TodoListDataModel todoList)
+        {
+            applicationDbContext.TodoLists.Update(todoList);
+            applicationDbContext.SaveChanges();
+            return RedirectToAction("Index");
+        }
+        
     }
 }

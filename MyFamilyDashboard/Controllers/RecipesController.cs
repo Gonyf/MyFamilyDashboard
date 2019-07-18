@@ -48,15 +48,20 @@ namespace MyFamilyDashboard.Controllers
             applicationDbContext.SaveChanges();
             return RedirectToAction("Index");
         }
-
+        [HttpGet]
         public IActionResult Delete(int id)
+        {
+            var recipe = applicationDbContext.Recipes.FirstOrDefault(r => r.Id == id);
+            return View(recipe);
+        }
+        [HttpPost, ActionName("Delete")]
+        public IActionResult DeleteConfirmed(int id)
         {
             var recipe = applicationDbContext.Recipes.FirstOrDefault(r => r.Id == id);
             applicationDbContext.Recipes.Remove(recipe);
             applicationDbContext.SaveChanges();
             return RedirectToAction("Index");
         }
-
         [HttpGet]
         [Route("Recipes/Details/{id}")]
         public IActionResult Details(int id)
