@@ -4,10 +4,10 @@
 @model MyFamilyDashboard.Data.TodoListDataModel
 
 
-<ul id="myUL">
-    <div id="myDIV" class="header">
+<ul id="todoList">
+    <div id="todoDiv" class="header">
         <h2 style="margin:5px">My To Do List</h2>
-        <input type="text" id="myInput" placeholder="Title...">
+        <input type="text" id="myInput" placeholder="What to do...?">
         <span onclick="newElement()" class="addBtn">Add</span>
     </div>
     @if (Model != null && Model.TodoItems != null)

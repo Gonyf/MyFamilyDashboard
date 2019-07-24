@@ -1,21 +1,11 @@
-﻿body {
-    margin: 0;
-    min-width: 250px;
-}
-
-/* Include the padding and border in an element's total width and height */
-* {
-    box-sizing: border-box;
-}
-
-/* Remove margins and padding from the list */
+﻿/* Remove margins and padding from the list */
 ul {
     margin: 0;
     padding: 0;
 }
 
     /* Style the list items */
-#myUL li {
+#todoList li {
     cursor: pointer;
     display: inline-block;
     position: relative;
@@ -32,7 +22,7 @@ ul {
 }
 
         /* Set all odd list items to a different color (zebra-stripes) */
-        #myUL.li:nth-child(odd) {
+        #todoList.li:nth-child(odd) {
             background: #f9f9f9;
         }
 
