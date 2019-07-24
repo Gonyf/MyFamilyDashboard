@@ -14,7 +14,7 @@ function OnClick() {
     var div = this.parentElement;
     var input = this.parentElement.getElementsByTagName("input");
     var input = input[0];
-    console.log(input);
+    //console.log(input);
     input.value = null;
 }
 // Click on a close button to hide the current list item
@@ -29,6 +29,14 @@ var list = document.getElementById('myUL');
 list.addEventListener('click', function (ev) {
     if (ev.target.tagName === 'LI') {
         ev.target.classList.toggle('checked');
+        console.log(ev.target.querySelector('.completed'));
+        var completed = ev.target.querySelector('.completed')
+        if (completed.value == "False") {
+            completed.value = "True";
+        }
+        else {
+            completed.value = "False";
+        }
     }
 }, false);
 
@@ -44,8 +52,6 @@ function newElement() {
 
     var inputValue = document.getElementById("myInput").value;
     input.value = inputValue;
-    //var t = document.createTextNode(inputValue);
-    //li.appendChild(t);
     if (inputValue === '') {
         alert("You must write something!");
     } else {

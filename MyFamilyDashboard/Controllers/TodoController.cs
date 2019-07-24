@@ -44,10 +44,6 @@ namespace MyFamilyDashboard.Controllers
         [HttpPost]
         public IActionResult Edit(TodoListDataModel todoList)
         {
-            //var todoListExisting = applicationDbContext.TodoLists.Include(tdl => tdl.TodoItems).FirstOrDefault(tdl => tdl.Id == todoList.Id);
-            //todoListExisting.TodoItems = new List<TodoItemDataModel>();
-            //applicationDbContext.TodoLists.Update(todoListExisting);
-            //applicationDbContext.SaveChanges();
             foreach (var item in todoList.TodoItems)
             {
                 if (item.Text == null && item.ID != Guid.Empty)

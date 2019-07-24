@@ -15,9 +15,16 @@
         @for (int i = 0; i < Model.TodoItems.Count(); i++)
         {
             var idtext = $"todoItem{i}";
-            <li id=@idtext>
+            var completed = Model.TodoItems[i].Completed;
+            var liClass = string.Empty;
+            if (completed)
+            {
+                liClass = "checked";
+            }
+            <li id=@idtext class=@liClass>
                 @Html.TextBoxFor(it => Model.TodoItems[i].Text)
                 @Html.HiddenFor(it => Model.TodoItems[i].ID)
+                @Html.HiddenFor(it => Model.TodoItems[i].Completed, new { @class = "completed" })
             </li>
         }
     }
