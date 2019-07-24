@@ -3,6 +3,14 @@
 @{
     ViewData["Title"] = "View";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var todoDate = Model.DueDate.GetValueOrDefault().ToString("yyyy-MM-dd");
+}
+@section JavaScript
+    {
+    <script type="text/javascript" src="@Url.Content("~/js/ListManagement.js")"></script>
+}
+@section Styles {
+    <link href="@Url.Content("~/css/ListManagement.css")" rel="stylesheet" type="text/css" />
 }
 
 <h1>View</h1>
@@ -17,6 +25,11 @@
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
                 <input asp-for="Title" class="form-control" />
+                <label asp-for="DueDate" class="control-label"></label>
+                <input type="date" name="DueDate" value=@todoDate>
+                
+                <partial name="_TodoItems" />
+                
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
             <div class="form-group">
