@@ -44,11 +44,26 @@ namespace MyFamilyDashboard.Controllers
         [HttpPost]
         public IActionResult Edit(TodoListDataModel todoList)
         {
-            foreach (var item in todoList.TodoItems)
+            if (todoList.TodoItems != null)
             {
-                if (item.Text == null && item.ID != Guid.Empty)
+                var toRemove = new List<TodoItemDataModel>();
+                foreach (var item in todoList.TodoItems)
                 {
-                    applicationDbContext.Entry(item).State = EntityState.Deleted;
+                    if (item.Text == null)
+                    {
+                        if (item.ID != Guid.Empty)
+                        {
+                            applicationDbContext.Entry(item).State = EntityState.Deleted;
+                        }
+                        else
+                        {
+                            toRemove.Add(item);
+                        }
+                    }
+                }
+                foreach (var deletedItem in toRemove)
+                {
+                    todoList.TodoItems.Remove(deletedItem);
                 }
             }
             applicationDbContext.TodoLists.Update(todoList);
